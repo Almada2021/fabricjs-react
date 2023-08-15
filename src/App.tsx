@@ -12,6 +12,9 @@ function App() {
   const onAddCircle = () => {
     editor?.addCircle()
   }
+  const onAddTriangle = () => {
+    editor?.addTriangle()
+  }
   const onAddRectangle = () => {
     editor?.addRectangle()
   }
@@ -50,6 +53,7 @@ function App() {
           <button onClick={onZoomOut}>Zoom Out</button>
           <button onClick={onAddCircle}>Add circle</button>
           <button onClick={onAddRectangle}>Add Rectangle</button>
+          <button onClick={onAddTriangle}>Add Triangle</button>
           <button onClick={onAddLine}>Add Line</button>
           <button onClick={onDeleteAll}>Delete All</button>
           <button onClick={onDeleteSelected}>Delete Selected</button>

@@ -6,6 +6,7 @@ export interface FabricJSEditor {
   canvas: fabric.Canvas
   addCircle: () => void
   addRectangle: () => void
+  addTriangle: () => void
   addLine: () => void
   addText: (text: string) => void
   updateText: (text: string) => void
@@ -35,6 +36,13 @@ const buildEditor = (
     addCircle: () => {
       const object = new fabric.Circle({
         ...CIRCLE,
+        fill: fillColor,
+        stroke: strokeColor
+      })
+      canvas.add(object)
+    },
+    addTriangle: () => {
+      const object = new fabric.Triangle({
         fill: fillColor,
         stroke: strokeColor
       })
