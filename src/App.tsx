@@ -45,6 +45,15 @@ function App() {
   const onZoomOut = () => {
     editor?.zoomOut()
   }
+  const reJSON = () => {
+    editor?.moveForward();
+    // let q = editor?.toJSON();
+    // console.log(q)
+  }
+  const testActive = () => {
+    editor?.sendBack();
+    
+  }
   return (
     <>
       {editor ? (
@@ -57,6 +66,8 @@ function App() {
           <button onClick={onAddLine}>Add Line</button>
           <button onClick={onDeleteAll}>Delete All</button>
           <button onClick={onDeleteSelected}>Delete Selected</button>
+          <button onClick={reJSON}>json</button>
+          <button onClick={testActive}>active</button>
           <input
             type='text'
             value={text}

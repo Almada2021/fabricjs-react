@@ -1,7 +1,6 @@
 import { fabric } from 'fabric'
-import { CIRCLE, RECTANGLE, LINE, TEXT, FILL, STROKE } from './defaultShapes'
+import { CIRCLE, RECTANGLE, LINE, TEXT, FILL, STROKE, TRIANGLE } from './defaultShapes'
 import { useEffect, useState } from 'react'
-
 export interface FabricJSEditor {
   canvas: fabric.Canvas
   addCircle: () => void
@@ -10,10 +9,14 @@ export interface FabricJSEditor {
   addLine: () => void
   addText: (text: string) => void
   updateText: (text: string) => void
+  updateObjects: (text: string, value: any) => void
   deleteAll: () => void
   deleteSelected: () => void
+  moveForward: () => void
+  toJSON: () => any
   fillColor: string
   strokeColor: string
+  sendBack: () => void
   setFillColor: (color: string) => void
   setStrokeColor: (color: string) => void
   zoomIn: () => void
@@ -43,6 +46,7 @@ const buildEditor = (
     },
     addTriangle: () => {
       const object = new fabric.Triangle({
+        ...TRIANGLE,
         fill: fillColor,
         stroke: strokeColor
       })
@@ -69,13 +73,40 @@ const buildEditor = (
       object.set({ text: text })
       canvas.add(object)
     },
+    toJSON: () => {
+      return canvas.toJSON();
+    },
+    moveForward: () => {
+      const objects: any[] = canvas.getActiveObjects();
+      objects.forEach((e) => {
+        canvas.bringForward(e)
+      })
+      canvas.discardActiveObject()
+      canvas.renderAll()
+
+    },
+
     updateText: (text: string) => {
       const objects: any[] = canvas.getActiveObjects()
       if (objects.length && objects[0].type === TEXT.type) {
         const textObject: fabric.Textbox = objects[0]
+
         textObject.set({ text })
         canvas.renderAll()
       }
+    },
+
+    updateObjects: (text, value) => {
+      const objects: any[] = canvas.getActiveObjects();
+      const post: any = {
+      }
+      post[`${text}`] = value
+      objects.forEach((element) => {
+        element.set({ ...post })
+
+      })
+      canvas.renderAll();
+
     },
     deleteAll: () => {
       canvas.getObjects().forEach((object) => canvas.remove(object))
@@ -88,6 +119,15 @@ const buildEditor = (
       canvas.renderAll()
     },
     fillColor,
+    sendBack: () => {
+      const objects: any[] = canvas.getActiveObjects();
+      objects.forEach((e) => {
+        canvas.sendToBack(e)
+      })
+      canvas.discardActiveObject()
+      canvas.renderAll()
+
+    },
     strokeColor,
     setFillColor: (fill: string) => {
       _setFillColor(fill)
@@ -168,13 +208,13 @@ const useFabricJSEditor = (
     },
     editor: canvas
       ? buildEditor(
-          canvas,
-          fillColor,
-          strokeColor,
-          setFillColor,
-          setStrokeColor,
-          scaleStep
-        )
+        canvas,
+        fillColor,
+        strokeColor,
+        setFillColor,
+        setStrokeColor,
+        scaleStep
+      )
       : undefined
   }
 }

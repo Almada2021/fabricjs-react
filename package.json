@@ -1,8 +1,8 @@
 {
-  "name": "fabricjs-react",
-  "version": "1.2.1",
-  "description": "support fabricjs from react",
-  "author": "Alejandro Soto",
+  "name": "fabricjs-react-improve",
+  "version": "1.0.1",
+  "description": "improve of the library fabricjs from react",
+  "author": "Alejandro Soto, Tobias Almada",
   "license": "MIT",
   "type": "module",
   "main": "./dist/fabricjs-react.umd.js",

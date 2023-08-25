@@ -36,3 +36,13 @@ export const TEXT = {
   fontFamily: 'Arial',
   fill: STROKE
 }
+
+export const TRIANGLE = {
+  left: 100,
+  top: 100,
+  fill: FILL,
+  stroke: STROKE,
+  width: 40,
+  height: 40,
+  angle: 0
+}
