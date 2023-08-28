@@ -206,40 +206,41 @@ const useFabricJSEditor = (
   useEffect(() => {
     const bindEvents = (canvas: fabric.Canvas) => {
       var isDragging : boolean = false
-      var selection : boolean = true
       var lastPosX: number;
       var lastPosY : number;
-      var vpt : number[] = []
-      canvas.on('mouse:down', function(opt) {
-        var evt = opt.e;
-        if (evt.altKey === true) {
-          isDragging = true;
-          selection = false;
-          lastPosX = evt.clientX;
-          lastPosY = evt.clientY;
-        }
-      });
-      canvas.on('mouse:move', function(opt) {
-        if (isDragging) {
-          var e = opt.e;
-          if(canvas.viewportTransform){
-            vpt = canvas.viewportTransform;
-            vpt[4] += e.clientX - lastPosX;
-            vpt[5] += e.clientY - lastPosY;
+      // var vpt : number[] = []
+      // canvas.on('mouse:down', function(opt) {
+        // var evt = opt.e;
+        // if (evt.altKey === true) {
+          // isDragging = true;
+          // future improve
+          // canvas.selectionDashArray=[]
+          // canvas.selection = false;
+          // lastPosX = evt.clientX;
+          // lastPosY = evt.clientY;
+        // }
+      // });
+      // canvas.on('mouse:move', function(opt) {
+        // if (isDragging) {
+          // var e = opt.e;
+          // if(canvas.viewportTransform){
+            // vpt = canvas.viewportTransform;
+            // vpt[4] += e.clientX - lastPosX;
+            // vpt[5] += e.clientY - lastPosY;
 
-          }
-          canvas.requestRenderAll();
-          lastPosX = e.clientX;
-          lastPosY = e.clientY;
-        }
-      });
-      canvas.on('mouse:up', function(opt) {
+          // }
+          // canvas.requestRenderAll();
+          // lastPosX = e.clientX;
+          // lastPosY = e.clientY;
+        // }
+      // });
+      // canvas.on('mouse:up', function(opt) {
         // on mouse up we want to recalculate new interaction
         // for all objects, so we call setViewportTransform
-        canvas.setViewportTransform(vpt);
-        isDragging = false;
-        selection = true;
-      });
+        // canvas.setViewportTransform(vpt);
+        // isDragging = false;
+        // canvas.selection = true;
+      // });
           
       canvas.on('mouse:wheel', function(opt) {
         let delta = opt.e.deltaY;

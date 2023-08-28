@@ -55,12 +55,12 @@ function App() {
 
   }
   const clicked = (e: any) => {
-    // editor?.addTriangle({left: e.clientX - 20 , top: e.clientY - 130, width: 80, height:80, angle:0})
-    editor?.addText("Add Text", {
-      type: 'text',
-      left: e.clientX - 20, top: e.clientY - 130, fontSize: 16,
-      fontFamily: 'Arial',
-    })
+    editor?.addTriangle({left: e.clientX - 20 , top: e.clientY - 130, width: 80, height:80, angle:0})
+    // editor?.addText("Add Text", {
+    //   type: 'text',
+    //   left: e.clientX - 20, top: e.clientY - 130, fontSize: 16,
+    //   fontFamily: 'Arial',
+    // })
   }
 
   return (
@@ -105,7 +105,7 @@ function App() {
         <>Loading...</>
       )}
       <div onClick={(e) => clicked(e)}>
-        <FabricJSCanvas disable={true} className='sample-canvas' onReady={onReady} />
+        <FabricJSCanvas disable={selectedObjects ? selectedObjects?.length > 0 : false} className='sample-canvas' onReady={onReady} />
       </div>
     </>
   )
