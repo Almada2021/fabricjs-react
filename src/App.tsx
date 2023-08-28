@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FabricJSCanvas, useFabricJSEditor } from './lib'
 
 function App() {
@@ -46,14 +46,23 @@ function App() {
     editor?.zoomOut()
   }
   const reJSON = () => {
-    editor?.moveForward();
-    // let q = editor?.toJSON();
+    // editor?.moveForward();
+    let q = editor?.toJSON();
     // console.log(q)
   }
   const testActive = () => {
     editor?.sendBack();
-    
+
   }
+  const clicked = (e: any) => {
+    // editor?.addTriangle({left: e.clientX - 20 , top: e.clientY - 130, width: 80, height:80, angle:0})
+    editor?.addText("Add Text", {
+      type: 'text',
+      left: e.clientX - 20, top: e.clientY - 130, fontSize: 16,
+      fontFamily: 'Arial',
+    })
+  }
+
   return (
     <>
       {editor ? (
@@ -95,7 +104,9 @@ function App() {
       ) : (
         <>Loading...</>
       )}
-      <FabricJSCanvas className='sample-canvas' onReady={onReady} />
+      <div onClick={(e) => clicked(e)}>
+        <FabricJSCanvas disable={false} className='sample-canvas' onReady={onReady} />
+      </div>
     </>
   )
 }

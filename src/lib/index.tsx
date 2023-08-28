@@ -4,13 +4,14 @@ import { useFabricJSEditor, FabricJSEditor, FabricJSEditorHook } from './editor'
 
 export interface Props {
   className?: string
+  disable?: boolean
   onReady?: (canvas: fabric.Canvas) => void
 }
 
 /**
  * Fabric canvas as component
  */
-const FabricJSCanvas = ({ className, onReady }: Props) => {
+const FabricJSCanvas = ({ className, onReady, disable }: Props) => {
   const canvasEl = useRef(null)
   const canvasElParent = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -36,8 +37,13 @@ const FabricJSCanvas = ({ className, onReady }: Props) => {
       window.removeEventListener('resize', resizeCanvas)
     }
   }, [])
+  const creation = (e:any) => {
+    if(disable){
+      e.stopPropagation();
+    }
+  }
   return (
-    <div ref={canvasElParent} className={className}>
+    <div onClick={(e: any) => creation(e)} ref={canvasElParent} className={className}>
       <canvas ref={canvasEl} />
     </div>
   )

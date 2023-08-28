@@ -6,7 +6,7 @@ export const CIRCLE = {
   left: 100,
   top: 100,
   fill: FILL,
-  stroke: STROKE
+  stroke: STROKE,
 }
 
 export const RECTANGLE = {

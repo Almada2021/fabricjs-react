@@ -7,7 +7,7 @@
 
 We'll need to install `fabric`, `react` and `react-dom` because are peer dependencies of this library if you haven't yet otherwise install only what you don't have:
 ```bash
-npm install --save fabricjs-react fabric react react-dom
+npm install --save fabricjs-react-improve fabric react react-dom
 ```
 
 ## Usage
@@ -59,14 +59,16 @@ useEffect(() => {
 ```
 
 
-## Donations
+## Donations to Original creator
 <a href="https://www.buymeacoffee.com/alecode" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## License
 
-MIT © [Alejandro Soto](https://github.com/Alejandro Soto)
+MIT © [Alejandro Soto](https://github.com/Alejandro Soto, Tobias Almada)
 
 Feel free to collaborate.
 
 
+
+## Collaboration by Tobias Almada
 

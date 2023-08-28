@@ -3,11 +3,11 @@ import { CIRCLE, RECTANGLE, LINE, TEXT, FILL, STROKE, TRIANGLE } from './default
 import { useEffect, useState } from 'react'
 export interface FabricJSEditor {
   canvas: fabric.Canvas
-  addCircle: () => void
-  addRectangle: () => void
-  addTriangle: () => void
+  addCircle: (circle?: fabric.ICircleOptions) => void
+  addRectangle: (rectangle?: fabric.IRectOptions) => void
+  addTriangle: (triangle?: fabric.ITriangleOptions) => void
   addLine: () => void
-  addText: (text: string) => void
+  addText: (text: string, data?: fabric.ITextOptions) => void
   updateText: (text: string) => void
   updateObjects: (text: string, value: any) => void
   deleteAll: () => void
@@ -36,25 +36,45 @@ const buildEditor = (
 ): FabricJSEditor => {
   return {
     canvas,
-    addCircle: () => {
+    addCircle: (prevcircle: fabric.ICircleOptions = CIRCLE) => {
+      let circle = {
+        ...prevcircle,
+        fill: fillColor,
+        stroke: strokeColor
+      }
+      if (!circle.radius) {
+        circle.radius = 20
+      }
       const object = new fabric.Circle({
-        ...CIRCLE,
-        fill: fillColor,
-        stroke: strokeColor
+        ...circle,
       })
       canvas.add(object)
     },
-    addTriangle: () => {
+    addTriangle: (triangle: fabric.ITriangleOptions = TRIANGLE) => {
+      let total = {
+        ...triangle,
+      }
       const object = new fabric.Triangle({
-        ...TRIANGLE,
+        ...total,
         fill: fillColor,
         stroke: strokeColor
       })
       canvas.add(object)
     },
-    addRectangle: () => {
+    addRectangle: (rectangle?: fabric.IRectOptions) => {
+      let total;
+      if (rectangle) {
+        total = {...RECTANGLE}
+        total = {
+          ...rectangle,
+        }
+      } else {
+        total = {
+          ...RECTANGLE
+        }
+      }
       const object = new fabric.Rect({
-        ...RECTANGLE,
+        ...total,
         fill: fillColor,
         stroke: strokeColor
       })
@@ -67,9 +87,9 @@ const buildEditor = (
       })
       canvas.add(object)
     },
-    addText: (text: string) => {
+    addText: (text: string, data: fabric.ITextOptions = TEXT) => {
       // use stroke in text fill, fill default is most of the time transparent
-      const object = new fabric.Textbox(text, { ...TEXT, fill: strokeColor })
+      const object = new fabric.Textbox(text, { ...data, fill: strokeColor })
       object.set({ text: text })
       canvas.add(object)
     },
