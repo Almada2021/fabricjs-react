@@ -105,7 +105,7 @@ function App() {
         <>Loading...</>
       )}
       <div onClick={(e) => clicked(e)}>
-        <FabricJSCanvas disable={false} className='sample-canvas' onReady={onReady} />
+        <FabricJSCanvas disable={true} className='sample-canvas' onReady={onReady} />
       </div>
     </>
   )

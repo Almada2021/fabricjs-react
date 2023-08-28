@@ -70,7 +70,7 @@ const buildEditor = (
         }
       } else {
         total = {
-          ...RECTANGLE
+          ...RECTANGLE,
         }
       }
       const object = new fabric.Rect({
@@ -205,6 +205,52 @@ const useFabricJSEditor = (
   const [selectedObjects, setSelectedObject] = useState<fabric.Object[]>([])
   useEffect(() => {
     const bindEvents = (canvas: fabric.Canvas) => {
+      var isDragging : boolean = false
+      var selection : boolean = true
+      var lastPosX: number;
+      var lastPosY : number;
+      var vpt : number[] = []
+      canvas.on('mouse:down', function(opt) {
+        var evt = opt.e;
+        if (evt.altKey === true) {
+          isDragging = true;
+          selection = false;
+          lastPosX = evt.clientX;
+          lastPosY = evt.clientY;
+        }
+      });
+      canvas.on('mouse:move', function(opt) {
+        if (isDragging) {
+          var e = opt.e;
+          if(canvas.viewportTransform){
+            vpt = canvas.viewportTransform;
+            vpt[4] += e.clientX - lastPosX;
+            vpt[5] += e.clientY - lastPosY;
+
+          }
+          canvas.requestRenderAll();
+          lastPosX = e.clientX;
+          lastPosY = e.clientY;
+        }
+      });
+      canvas.on('mouse:up', function(opt) {
+        // on mouse up we want to recalculate new interaction
+        // for all objects, so we call setViewportTransform
+        canvas.setViewportTransform(vpt);
+        isDragging = false;
+        selection = true;
+      });
+          
+      canvas.on('mouse:wheel', function(opt) {
+        let delta = opt.e.deltaY;
+        let zoom = canvas.getZoom();
+        zoom *= 0.999 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
+        canvas.setZoom(zoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+      })
       canvas.on('selection:cleared', () => {
         setSelectedObject([])
       })
@@ -223,7 +269,6 @@ const useFabricJSEditor = (
   return {
     selectedObjects,
     onReady: (canvasReady: fabric.Canvas): void => {
-      console.log('Fabric canvas ready')
       setCanvas(canvasReady)
     },
     editor: canvas
