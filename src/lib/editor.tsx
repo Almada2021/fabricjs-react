@@ -3,16 +3,18 @@ import { CIRCLE, RECTANGLE, LINE, TEXT, FILL, STROKE, TRIANGLE } from './default
 import { useEffect, useState } from 'react'
 export interface FabricJSEditor {
   canvas: fabric.Canvas
-  addCircle: (circle?: fabric.ICircleOptions) => void
-  addRectangle: (rectangle?: fabric.IRectOptions) => void
-  addTriangle: (triangle?: fabric.ITriangleOptions) => void
+  addCircle: (circle?: fabric.ICircleOptions, optional?: any) => void
+  addRectangle: (rectangle?: fabric.IRectOptions, optional?: any) => void
+  addTriangle: (triangle?: fabric.ITriangleOptions, optional?: any) => void
   addLine: () => void
-  addText: (text: string, data?: fabric.ITextOptions) => void
+  addText: (text: string, data?: fabric.ITextOptions, optional?: any) => void
+  getIndex: (obj: any) => number
   updateText: (text: string) => void
   updateObjects: (text: string, value: any) => void
   deleteAll: () => void
   deleteSelected: () => void
   moveForward: () => void
+  loadJSON: (json: any, fn?: Function) => void
   toJSON: () => any
   fillColor: string
   strokeColor: string
@@ -36,7 +38,7 @@ const buildEditor = (
 ): FabricJSEditor => {
   return {
     canvas,
-    addCircle: (prevcircle: fabric.ICircleOptions = CIRCLE) => {
+    addCircle: (prevcircle: fabric.ICircleOptions = CIRCLE, optional = {}) => {
       let circle = {
         ...prevcircle,
         fill: fillColor,
@@ -47,24 +49,26 @@ const buildEditor = (
       }
       const object = new fabric.Circle({
         ...circle,
+        optional
       })
       canvas.add(object)
     },
-    addTriangle: (triangle: fabric.ITriangleOptions = TRIANGLE) => {
+    addTriangle: (triangle: fabric.ITriangleOptions = TRIANGLE, optional = {}) => {
       let total = {
         ...triangle,
       }
       const object = new fabric.Triangle({
         ...total,
         fill: fillColor,
-        stroke: strokeColor
+        stroke: strokeColor,
+        optional
       })
       canvas.add(object)
     },
-    addRectangle: (rectangle?: fabric.IRectOptions) => {
+    addRectangle: (rectangle?: fabric.IRectOptions, optional = {}) => {
       let total;
       if (rectangle) {
-        total = {...RECTANGLE}
+        total = { ...RECTANGLE }
         total = {
           ...rectangle,
         }
@@ -76,7 +80,8 @@ const buildEditor = (
       const object = new fabric.Rect({
         ...total,
         fill: fillColor,
-        stroke: strokeColor
+        stroke: strokeColor,
+        optional
       })
       canvas.add(object)
     },
@@ -87,11 +92,22 @@ const buildEditor = (
       })
       canvas.add(object)
     },
-    addText: (text: string, data: fabric.ITextOptions = TEXT) => {
+    addText: (text: string, data: fabric.ITextOptions = TEXT, optional = {}) => {
       // use stroke in text fill, fill default is most of the time transparent
-      const object = new fabric.Textbox(text, { ...data, fill: strokeColor })
+      const object = new fabric.Textbox(text, { ...data, fill: strokeColor, optional })
       object.set({ text: text })
       canvas.add(object)
+    },
+    getIndex: (obj: any) => {
+      if (obj === null || obj == undefined){
+        return -1;
+      }
+      const objects: any[] = canvas.getObjects();
+      let zIndex = objects.indexOf(obj);
+      return zIndex;
+    },
+    loadJSON: (json: any, fn: Function = () => { console.log("Loaded Json file")}) => {
+      canvas.loadFromJSON(json, fn)
     },
     toJSON: () => {
       return canvas.toJSON();
@@ -110,7 +126,6 @@ const buildEditor = (
       const objects: any[] = canvas.getActiveObjects()
       if (objects.length && objects[0].type === TEXT.type) {
         const textObject: fabric.Textbox = objects[0]
-
         textObject.set({ text })
         canvas.renderAll()
       }
@@ -205,44 +220,44 @@ const useFabricJSEditor = (
   const [selectedObjects, setSelectedObject] = useState<fabric.Object[]>([])
   useEffect(() => {
     const bindEvents = (canvas: fabric.Canvas) => {
-      var isDragging : boolean = false
+      var isDragging: boolean = false
       var lastPosX: number;
-      var lastPosY : number;
+      var lastPosY: number;
       // var vpt : number[] = []
       // canvas.on('mouse:down', function(opt) {
-        // var evt = opt.e;
-        // if (evt.altKey === true) {
-          // isDragging = true;
-          // future improve
-          // canvas.selectionDashArray=[]
-          // canvas.selection = false;
-          // lastPosX = evt.clientX;
-          // lastPosY = evt.clientY;
-        // }
+      // var evt = opt.e;
+      // if (evt.altKey === true) {
+      // isDragging = true;
+      // future improve
+      // canvas.selectionDashArray=[]
+      // canvas.selection = false;
+      // lastPosX = evt.clientX;
+      // lastPosY = evt.clientY;
+      // }
       // });
       // canvas.on('mouse:move', function(opt) {
-        // if (isDragging) {
-          // var e = opt.e;
-          // if(canvas.viewportTransform){
-            // vpt = canvas.viewportTransform;
-            // vpt[4] += e.clientX - lastPosX;
-            // vpt[5] += e.clientY - lastPosY;
+      // if (isDragging) {
+      // var e = opt.e;
+      // if(canvas.viewportTransform){
+      // vpt = canvas.viewportTransform;
+      // vpt[4] += e.clientX - lastPosX;
+      // vpt[5] += e.clientY - lastPosY;
 
-          // }
-          // canvas.requestRenderAll();
-          // lastPosX = e.clientX;
-          // lastPosY = e.clientY;
-        // }
+      // }
+      // canvas.requestRenderAll();
+      // lastPosX = e.clientX;
+      // lastPosY = e.clientY;
+      // }
       // });
       // canvas.on('mouse:up', function(opt) {
-        // on mouse up we want to recalculate new interaction
-        // for all objects, so we call setViewportTransform
-        // canvas.setViewportTransform(vpt);
-        // isDragging = false;
-        // canvas.selection = true;
+      // on mouse up we want to recalculate new interaction
+      // for all objects, so we call setViewportTransform
+      // canvas.setViewportTransform(vpt);
+      // isDragging = false;
+      // canvas.selection = true;
       // });
-          
-      canvas.on('mouse:wheel', function(opt) {
+
+      canvas.on('mouse:wheel', function (opt) {
         let delta = opt.e.deltaY;
         let zoom = canvas.getZoom();
         zoom *= 0.999 ** delta;
