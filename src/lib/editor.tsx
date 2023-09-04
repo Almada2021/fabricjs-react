@@ -8,6 +8,7 @@ export interface FabricJSEditor {
   addTriangle: (triangle?: fabric.ITriangleOptions, optional?: any) => void
   addLine: () => void
   addText: (text: string, data?: fabric.ITextOptions, optional?: any) => void
+  cleanSelection: () => void
   getIndex: (obj: any) => number
   updateText: (text: string) => void
   updateObjects: (text: string, value: any) => void
@@ -97,6 +98,10 @@ const buildEditor = (
       const object = new fabric.Textbox(text, { ...data, fill: strokeColor, optional })
       object.set({ text: text })
       canvas.add(object)
+    },
+    cleanSelection : () => {
+      canvas.discardActiveObject()
+      canvas.renderAll();
     },
     getIndex: (obj: any) => {
       if (obj === null || obj == undefined){
@@ -217,6 +222,7 @@ const useFabricJSEditor = (
   const [strokeColor, setStrokeColor] = useState<string>(
     defaultStrokeColor || STROKE
   )
+
   const [selectedObjects, setSelectedObject] = useState<fabric.Object[]>([])
   useEffect(() => {
     const bindEvents = (canvas: fabric.Canvas) => {

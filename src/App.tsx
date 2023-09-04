@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { FabricJSCanvas, useFabricJSEditor } from './lib'
 
 function App() {
-  const { selectedObjects, editor, onReady,  } = useFabricJSEditor({
+  const { selectedObjects, editor, onReady} = useFabricJSEditor({
     defaultStrokeColor: 'red'
   })
   const [text, setText] = useState('')
@@ -175,7 +175,7 @@ function App() {
     //   fontFamily: 'Arial',
     // })
   }
-  console.log(editor?.getIndex(selectedObjects ? selectedObjects[0] : null))
+  // console.log(editor?.getIndex(selectedObjects ? selectedObjects[0] : null))
   return (
     <>
       {editor ? (
@@ -189,6 +189,9 @@ function App() {
           <button onClick={onDeleteAll}>Delete All</button>
           <button onClick={onDeleteSelected}>Delete Selected</button>
           <button onClick={reJSON}>json</button>
+          <button onClick={() => {
+            editor.cleanSelection();
+          }}>clean</button>
           <button onClick={testActive}>active</button>
           <input
             type='text'
