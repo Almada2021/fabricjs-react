@@ -16,7 +16,7 @@ export interface FabricJSEditor {
   deleteSelected: () => void
   moveForward: () => void
   loadJSON: (json: any, fn?: Function) => void
-  toJSON: () => any
+  toJSON: (stringArray?: string[]) => any
   fillColor: string
   strokeColor: string
   sendBack: () => void
@@ -99,23 +99,29 @@ const buildEditor = (
       object.set({ text: text })
       canvas.add(object)
     },
-    cleanSelection : () => {
+    cleanSelection: () => {
       canvas.discardActiveObject()
       canvas.renderAll();
     },
     getIndex: (obj: any) => {
-      if (obj === null || obj == undefined){
+      if (obj === null || obj == undefined) {
         return -1;
       }
       const objects: any[] = canvas.getObjects();
       let zIndex = objects.indexOf(obj);
       return zIndex;
     },
-    loadJSON: (json: any, fn: Function = () => { console.log("Loaded Json file")}) => {
+    loadJSON: (json: any, fn: Function = () => { console.log("Loaded Json file") }) => {
       canvas.loadFromJSON(json, fn)
     },
-    toJSON: () => {
-      return canvas.toJSON();
+    toJSON: (stringArray:string[] = []) => {
+      let total;
+      if(stringArray?.length > 0){
+        total = [...stringArray, "optional"];
+      }else{
+        total = ["optional"];
+      }
+      return canvas.toJSON(total);
     },
     moveForward: () => {
       const objects: any[] = canvas.getActiveObjects();

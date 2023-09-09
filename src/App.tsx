@@ -161,14 +161,14 @@ function App() {
   const reJSON = () => {
     // editor?.moveForward();
     let q = editor?.toJSON();
-    // console.log(q)
+    console.log(q)
   }
   const testActive = () => {
     editor?.sendBack();
 
   }
   const clicked = (e: any) => {
-    editor?.addTriangle({ left: e.clientX - 20, top: e.clientY - 130, width: 80, height: 80, angle: 0 })
+    editor?.addTriangle({ left: e.clientX - 20, top: e.clientY - 130, width: 80, height: 80, angle: 0 }, {queso: "perro"})
     // editor?.addText("Add Text", {
     //   type: 'text',
     //   left: e.clientX - 20, top: e.clientY - 130, fontSize: 16,
