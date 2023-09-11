@@ -9,6 +9,7 @@ export interface FabricJSEditor {
   addLine: () => void
   addText: (text: string, data?: fabric.ITextOptions, optional?: any) => void
   cleanSelection: () => void
+  getAll: () => fabric.Object[]
   getIndex: (obj: any) => number
   updateText: (text: string) => void
   updateObjects: (text: string, value: any) => void
@@ -102,6 +103,9 @@ const buildEditor = (
     cleanSelection: () => {
       canvas.discardActiveObject()
       canvas.renderAll();
+    },
+    getAll: () => {
+      return canvas.getObjects();
     },
     getIndex: (obj: any) => {
       if (obj === null || obj == undefined) {
@@ -216,11 +220,13 @@ interface FabricJSEditorHookProps {
   defaultFillColor?: string
   defaultStrokeColor?: string
   scaleStep?: number
+  wheel?: boolean
 }
 
 const useFabricJSEditor = (
   props: FabricJSEditorHookProps = {}
 ): FabricJSEditorHook => {
+
   const scaleStep = props.scaleStep || 0.5
   const { defaultFillColor, defaultStrokeColor } = props
   const [canvas, setCanvas] = useState<null | fabric.Canvas>(null)
@@ -232,9 +238,9 @@ const useFabricJSEditor = (
   const [selectedObjects, setSelectedObject] = useState<fabric.Object[]>([])
   useEffect(() => {
     const bindEvents = (canvas: fabric.Canvas) => {
-      var isDragging: boolean = false
-      var lastPosX: number;
-      var lastPosY: number;
+      // var isDragging: boolean = false
+      // var lastPosX: number;
+      // var lastPosY: number;
       // var vpt : number[] = []
       // canvas.on('mouse:down', function(opt) {
       // var evt = opt.e;
@@ -270,14 +276,16 @@ const useFabricJSEditor = (
       // });
 
       canvas.on('mouse:wheel', function (opt) {
-        let delta = opt.e.deltaY;
-        let zoom = canvas.getZoom();
-        zoom *= 0.999 ** delta;
-        if (zoom > 20) zoom = 20;
-        if (zoom < 0.01) zoom = 0.01;
-        canvas.setZoom(zoom);
-        opt.e.preventDefault();
-        opt.e.stopPropagation();
+        if(props.wheel){
+          let delta = opt.e.deltaY;
+          let zoom = canvas.getZoom();
+          zoom *= 0.999 ** delta;
+          if (zoom > 20) zoom = 20;
+          if (zoom < 0.01) zoom = 0.01;
+          canvas.setZoom(zoom);
+          opt.e.preventDefault();
+          opt.e.stopPropagation();
+        }
       })
       canvas.on('selection:cleared', () => {
         setSelectedObject([])

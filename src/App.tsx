@@ -3,122 +3,12 @@ import { FabricJSCanvas, useFabricJSEditor } from './lib'
 
 function App() {
   const { selectedObjects, editor, onReady} = useFabricJSEditor({
-    defaultStrokeColor: 'red'
+    defaultStrokeColor: 'red',
+    wheel: true
   })
   const [text, setText] = useState('')
   const [strokeColor, setStrokeColor] = useState('')
   const [fillColor, setFillColor] = useState('')
-  const testCanvas = {
-    "version": "5.3.0",
-    "objects": [
-      {
-        "type": "rect",
-        "version": "5.3.0",
-        "originX": "left",
-        "originY": "top",
-        "left": 488,
-        "top": 114,
-        "width": 80,
-        "height": 80,
-        "fill": "rgb(255,255,255,1)",
-        "stroke": "#000000",
-        "strokeWidth": 1,
-        "strokeDashArray": null,
-        "strokeLineCap": "butt",
-        "strokeDashOffset": 0,
-        "strokeLineJoin": "miter",
-        "strokeUniform": false,
-        "strokeMiterLimit": 4,
-        "scaleX": 11.17,
-        "scaleY": 6.3,
-        "angle": 0,
-        "flipX": false,
-        "flipY": false,
-        "opacity": 1,
-        "shadow": null,
-        "visible": true,
-        "backgroundColor": "",
-        "fillRule": "nonzero",
-        "paintFirst": "fill",
-        "globalCompositeOperation": "source-over",
-        "skewX": 0,
-        "skewY": 0,
-        "rx": 0,
-        "ry": 0
-      },
-      {
-        "type": "rect",
-        "version": "5.3.0",
-        "originX": "left",
-        "originY": "top",
-        "left": 490,
-        "top": 321,
-        "width": 80,
-        "height": 80,
-        "fill": "rgb(255,0,0,1)",
-        "stroke": "#000000",
-        "strokeWidth": 1,
-        "strokeDashArray": null,
-        "strokeLineCap": "butt",
-        "strokeDashOffset": 0,
-        "strokeLineJoin": "miter",
-        "strokeUniform": false,
-        "strokeMiterLimit": 4,
-        "scaleX": 11.15,
-        "scaleY": 3.77,
-        "angle": 0,
-        "flipX": false,
-        "flipY": false,
-        "opacity": 1,
-        "shadow": null,
-        "visible": true,
-        "backgroundColor": "",
-        "fillRule": "nonzero",
-        "paintFirst": "fill",
-        "globalCompositeOperation": "source-over",
-        "skewX": 0,
-        "skewY": 0,
-        "rx": 0,
-        "ry": 0
-      },
-      {
-        "type": "rect",
-        "version": "5.3.0",
-        "originX": "left",
-        "originY": "top",
-        "left": 495,
-        "top": 120,
-        "width": 80,
-        "height": 80,
-        "fill": "#00f",
-        "stroke": "#000000",
-        "strokeWidth": 1,
-        "strokeDashArray": null,
-        "strokeLineCap": "butt",
-        "strokeDashOffset": 0,
-        "strokeLineJoin": "miter",
-        "strokeUniform": false,
-        "strokeMiterLimit": 4,
-        "scaleX": 2.47,
-        "scaleY": 2.47,
-        "angle": 0,
-        "flipX": false,
-        "flipY": false,
-        "opacity": 1,
-        "shadow": null,
-        "visible": true,
-        "backgroundColor": "",
-        "fillRule": "nonzero",
-        "paintFirst": "fill",
-        "globalCompositeOperation": "source-over",
-        "skewX": 0,
-        "skewY": 0,
-        "rx": 0,
-        "ry": 0
-      }
-    ]
-  }
-
   // editor?.loadJSON(testCanvas, () => {
   //   console.log("Ready")
   // })
@@ -164,8 +54,8 @@ function App() {
     console.log(q)
   }
   const testActive = () => {
-    editor?.sendBack();
-
+    // editor?.sendBack();
+    console.log(editor?.getAll());
   }
   const clicked = (e: any) => {
     editor?.addTriangle({ left: e.clientX - 20, top: e.clientY - 130, width: 80, height: 80, angle: 0 }, {queso: "perro"})
