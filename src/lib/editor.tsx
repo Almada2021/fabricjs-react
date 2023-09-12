@@ -9,6 +9,7 @@ export interface FabricJSEditor {
   addLine: () => void
   addText: (text: string, data?: fabric.ITextOptions, optional?: any) => void
   cleanSelection: () => void
+  deleteFirst: () => void
   getAll: () => fabric.Object[]
   getIndex: (obj: any) => number
   updateText: (text: string) => void
@@ -103,6 +104,13 @@ const buildEditor = (
     cleanSelection: () => {
       canvas.discardActiveObject()
       canvas.renderAll();
+    },
+    deleteFirst: () => {
+      let objests = canvas.getActiveObjects()
+      canvas.remove(objests[0])
+      // canvas.getActiveObjects().forEach((object) => canvas.remove(object))
+      canvas.discardActiveObject()
+      canvas.renderAll()
     },
     getAll: () => {
       return canvas.getObjects();

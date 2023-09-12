@@ -4,7 +4,7 @@ import { FabricJSCanvas, useFabricJSEditor } from './lib'
 function App() {
   const { selectedObjects, editor, onReady} = useFabricJSEditor({
     defaultStrokeColor: 'red',
-    wheel: true
+    // wheel: true
   })
   const [text, setText] = useState('')
   const [strokeColor, setStrokeColor] = useState('')
@@ -54,8 +54,7 @@ function App() {
     console.log(q)
   }
   const testActive = () => {
-    // editor?.sendBack();
-    console.log(editor?.getAll());
+    editor?.deleteFirst()
   }
   const clicked = (e: any) => {
     editor?.addTriangle({ left: e.clientX - 20, top: e.clientY - 130, width: 80, height: 80, angle: 0 }, {queso: "perro"})
