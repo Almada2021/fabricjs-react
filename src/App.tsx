@@ -16,7 +16,11 @@ function App() {
     editor?.addCircle()
   }
   const onAddTriangle = () => {
+    let selection : fabric.Object | undefined = selectedObjects ? selectedObjects[0] : undefined
     editor?.addTriangle()
+    if(selection !== undefined){
+      editor?.manualSelection(selection)
+    }
   }
   const onAddRectangle = () => {
     editor?.addRectangle()

@@ -17,6 +17,7 @@ export interface FabricJSEditor {
   deleteAll: () => void
   deleteSelected: () => void
   moveForward: () => void
+  manualSelection: (obj: fabric.Object) => void
   loadJSON: (json: any, fn?: Function) => void
   toJSON: (stringArray?: string[]) => any
   fillColor: string
@@ -134,6 +135,12 @@ const buildEditor = (
         total = ["optional"];
       }
       return canvas.toJSON(total);
+    },
+    manualSelection: (obj: fabric.Object) => {
+      let objects = canvas.getObjects()
+      let index = objects.indexOf(obj)
+      console.log(index)
+      canvas.setActiveObject(objects[index]);
     },
     moveForward: () => {
       const objects: any[] = canvas.getActiveObjects();
