@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { fabric } from 'fabric'
 import { useFabricJSEditor, FabricJSEditor, FabricJSEditorHook } from './editor'
-
+import ControlProvider from './ControlProvider';
+import { useControl } from './ControlProvider';
 export interface Props {
   className?: string
   disable?: boolean
@@ -49,5 +50,5 @@ const FabricJSCanvas = ({ className, onReady, disable }: Props) => {
   )
 }
 
-export { FabricJSCanvas, useFabricJSEditor }
+export { FabricJSCanvas, useFabricJSEditor, ControlProvider, useControl }
 export type { FabricJSEditor, FabricJSEditorHook }
