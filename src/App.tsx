@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { FabricJSCanvas, useFabricJSEditor } from './lib'
-
+import { ControlProvider, FabricJSCanvas, useFabricJSEditor } from './lib'
+import Test from "./Test";
 function App() {
   const { selectedObjects, editor, onReady} = useFabricJSEditor({
     defaultStrokeColor: 'red',
@@ -104,7 +104,9 @@ function App() {
             onChange={(e) => setFillColor(e.target.value)}
           />
           <button onClick={onSetFillColor}>Set Fill Color</button>
-
+          <ControlProvider editor={editor} selectedObjects={selectedObjects}>
+            <Test/>
+          </ControlProvider>
           <pre>
             fillColor: {editor.fillColor}, strokeColor: {editor.strokeColor}
           </pre>
